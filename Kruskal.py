@@ -8,10 +8,10 @@ class Kruskal:
     def findMinimalSpanningTree(self, vertices, edges):
         # initializing
         minSpanningTree = []
-        self.__P.append(None)
         for v in vertices:
             self.__P.append(v)
 
+        # sort edges bei costs
         edgesSorted = self.__sortEdges(edges)
 
         partCount = len(vertices)
@@ -27,6 +27,7 @@ class Kruskal:
 
         return minSpanningTree
 
+
     # using bubblesort ... not optimal
     def __sortEdges(self, edgeArray):
         hasChanged = True
@@ -40,28 +41,34 @@ class Kruskal:
                     hasChanged = True
         return edgeArray
 
+
     # combine to trees to one
+    # union-by-size
     def __union(self, rootPart1, rootPart2):
         part1Length = 0
         part2Length = 0
         for i in range(1, 9):
-            if self.__P[i] == rootPart1:
+            if self.__P[i-1] == rootPart1:
                 part1Length += 1
-            elif self.__P[i] == rootPart2:
+            elif self.__P[i-1] == rootPart2:
                 part2Length += 1
 
         if part1Length < part2Length:
-            self.__P[rootPart1] = rootPart2
+            self.__P[rootPart1-1] = rootPart2
         else:
-            self.__P[rootPart2] = rootPart1
+            self.__P[rootPart2-1] = rootPart1
+
 
     # find root of tree in which vertex is
+    # path compression
     def __find(self, vertex):
         S = []
         S.insert(0, vertex)
-        while self.__P[vertex] != vertex:
-            vertex = self.__P[vertex]
+        while self.__P[vertex-1] != vertex:
+            vertex = self.__P[vertex-1]
             S.insert(0, vertex)
+
+        # vertex now contains root of tree
         for w in S:
-            self.__P[w] = vertex
+            self.__P[w-1] = vertex
         return vertex
