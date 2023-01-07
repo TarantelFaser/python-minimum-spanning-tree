@@ -1,74 +1,4 @@
-# first element just for filling, so indexing = vertex numbers
-P = []
-
-
-def kruskal(vertices, edges):
-    # initializing
-    global P
-    minSpanningTree = []
-    P.append(None)
-    for v in vertices:
-        P.append(v)
-
-    edgesSorted = sortEdges(edges)
-
-    partCount = len(vertices)
-    while partCount > 1:
-        print(P)
-        smallestEdge = edgesSorted.pop(0)
-        set1 = find(smallestEdge[0][0])
-        set2 = find(smallestEdge[0][1])
-        if set1 != set2:
-            union(set1, set2)
-            partCount -= 1
-            minSpanningTree.append(smallestEdge)
-
-    return minSpanningTree
-
-
-# using bubblesort here ... not very efficient
-def sortEdges(edgeArray):
-    hasChanged = True
-    while hasChanged:
-        hasChanged = False
-        for i in range(0, len(edgeArray) - 1):
-            if edgeArray[i][1] > edgeArray[i + 1][1]:
-                h = edgeArray[i]
-                edgeArray[i] = edgeArray[i + 1]
-                edgeArray[i + 1] = h
-                hasChanged = True
-    return edgeArray
-
-
-# combine to trees to one
-def union(rootPart1, rootPart2):
-    global P
-    part1Length = 0
-    part2Length = 0
-    for i in range(1, 9):
-        if P[i] == rootPart1:
-            part1Length += 1
-        elif P[i] == rootPart2:
-            part2Length += 1
-
-    if part1Length < part2Length:
-        P[rootPart1] = rootPart2
-    else:
-        P[rootPart2] = rootPart1
-
-
-# find root of tree in which vertex is
-def find(vertex):
-    global P
-    S = []
-    S.insert(0, vertex)
-    while P[vertex] != vertex:
-        vertex = P[vertex]
-        S.insert(0, vertex)
-    for w in S:
-        P[w] = vertex
-    return vertex
-
+from Kruskal import Kruskal
 
 # example
 if __name__ == '__main__':
@@ -88,5 +18,6 @@ if __name__ == '__main__':
         [[7, 8], 5]
     ]
 
-    minSpanningTree = kruskal(ex_vertices, ex_edges)
+    kruskalObject = Kruskal()
+    minSpanningTree = kruskalObject.findMinimalSpanningTree(ex_vertices, ex_edges)
     print(minSpanningTree)
