@@ -19,5 +19,6 @@ if __name__ == '__main__':
     ]
 
     kruskalObject = Kruskal()
+    kruskalObject.setTerminalOutput(True)
     minSpanningTree = kruskalObject.findMinimalSpanningTree(ex_vertices, ex_edges)
     print(minSpanningTree)

@@ -1,9 +1,13 @@
 
 class Kruskal:
     __P = None
+    __terminalOutput = False
 
     def __init__(self):
         self.__P = []
+
+    def setTerminalOutput(self, showOutput):
+        self.__terminalOutput = showOutput
 
     def findMinimalSpanningTree(self, vertices, edges):
         # initializing
@@ -14,9 +18,13 @@ class Kruskal:
         # sort edges bei costs
         edgesSorted = self.__sortEdges(edges)
 
+        if self.__terminalOutput:
+            print("Sorted Edges:\t", end='')
+            print(edgesSorted)
+            print("----------------------------------------")
+
         partCount = len(vertices)
         while partCount > 1:
-            print(self.__P)
             smallestEdge = edgesSorted.pop(0)
             set1 = self.__find(smallestEdge[0][0])
             set2 = self.__find(smallestEdge[0][1])
@@ -24,6 +32,13 @@ class Kruskal:
                 self.__union(set1, set2)
                 partCount -= 1
                 minSpanningTree.append(smallestEdge)
+
+            if self.__terminalOutput:
+                print("current Edge:\t", end='')
+                print(smallestEdge)
+                print("Partition:\t", end='')
+                print(self.__P)
+                print("----------------------------------------")
 
         return minSpanningTree
 
